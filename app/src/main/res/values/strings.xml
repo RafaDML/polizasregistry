@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PolizasRegistry</string>
+    <!--   ================  MainCards ================  -->
+
+    <string name="PolizaCardHeader">Póliza No. </string>
+    <string name="PolizaCardContentArticulo">Artículo : </string>
+    <string name="PolizaCardContentCantidad">Cantidad : </string>
+    <string name="PolizaCardContentEmpleado">Empleado : </string>
+    <string name="PolizaCardContentFecha">Fecha : </string>
+
 </resources>
