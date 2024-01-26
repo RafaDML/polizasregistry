@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.provider.Settings
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

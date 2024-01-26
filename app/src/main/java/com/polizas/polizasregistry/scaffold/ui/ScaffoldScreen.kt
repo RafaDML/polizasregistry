@@ -3,7 +3,6 @@ package com.polizas.polizasregistry.scaffold.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,19 +11,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,6 +38,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.polizas.polizasregistry.components.modals.create.models.model.PolizaMainParamsItem
+import com.polizas.polizasregistry.components.modals.create.ui.CreatePolizaScreen
 import com.polizas.polizasregistry.components.modals.inicio.ui.InicioScreen
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
@@ -49,31 +49,52 @@ import com.polizas.polizasregistry.scaffold.viewmodel.ScaffoldViewModel
 @Composable
 fun ScaffoldScreen(
     navigate: (AppScreens) -> Unit,
-    scaffoldViewModel: ScaffoldViewModel = hiltViewModel()
+    scaffoldViewModel: ScaffoldViewModel = hiltViewModel(),
 ) {
-    scaffoldViewModel.obtenerPolizas()
-    ShowLoadingScreen(scaffoldViewModel)
-    BottomBar(navigate = navigate, scaffoldViewModel = scaffoldViewModel)
+    scaffoldViewModel.obtenerPolizas(navigate)
+
+    showAddPolizaDialog(scaffoldViewModel)
+    ShowLoadingScreen(scaffoldViewModel, "Cargando")
+
+    BottomBar(navigate, scaffoldViewModel)
 }
 
 @Composable
-fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel) {
+fun showAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
+    val isShowAdd by scaffoldViewModel.showAddPoliza.observeAsState(false)
+
+    if (isShowAdd) CreatePolizaScreen(
+        msg = "",
+        titulo = "Crear Nueva Poliza",
+        icon = Icons.Filled.Check,
+        PolizaMainParamsItem(),
+        { scaffoldViewModel.closeCreatePolizaDialog() },
+        { scaffoldViewModel.closeCreatePolizaDialog() })
+}
+
+@Composable
+fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel, msg: String) {
     val isLoading: Boolean by scaffoldViewModel.isLoading.observeAsState(initial = false)
     val msg: String by scaffoldViewModel.msg.observeAsState("")
+    val message = if (msg.isNotEmpty()) msg else "Cargando"
     if (isLoading) {
-        LoadingScreen(msg = msg)
+        LoadingScreen(msg = message)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomBar(navigate: (AppScreens) -> Unit, scaffoldViewModel: ScaffoldViewModel) {
+fun BottomBar(
+    navigate: (AppScreens) -> Unit,
+    scaffoldViewModel: ScaffoldViewModel,
+) {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = { TopBar(navigate, scaffoldViewModel, navController) },
+        topBar = { TopBar(navigate, scaffoldViewModel) },
 
-        bottomBar = { BottomNavigationBar(navController, scaffoldViewModel) },
+
+        bottomBar = { BottomNavigationBar(navController, scaffoldViewModel, navigate) },
 
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
@@ -90,7 +111,6 @@ fun BottomBar(navigate: (AppScreens) -> Unit, scaffoldViewModel: ScaffoldViewMod
 fun TopBar(
     navigate: (AppScreens) -> Unit,
     scaffoldViewModel: ScaffoldViewModel,
-    navController: NavHostController
 ) {
     TopAppBar(
         modifier = Modifier
@@ -125,10 +145,14 @@ fun TopBar(
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavController, scaffoldViewModel: ScaffoldViewModel) {
+fun BottomNavigationBar(
+    navController: NavController,
+    scaffoldViewModel: ScaffoldViewModel,
+    navigate: (AppScreens) -> Unit
+) {
     val items = listOf(
-        AppScreens.PolizaScreen,
-        AppScreens.InicioScreen
+        AppScreens.InicioScreen,
+        AppScreens.PolizaScreen
     )
     BottomAppBar(
         cutoutShape = CircleShape,
@@ -168,7 +192,7 @@ fun BottomNavigationBar(navController: NavController, scaffoldViewModel: Scaffol
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
-                        if ("polizascreen" == item.route) scaffoldViewModel.obtenerPolizas()
+                        if ("polizascreen" == item.route) scaffoldViewModel.obtenerPolizas(navigate)
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                                 saveState = false
@@ -203,13 +227,14 @@ fun Navigation(
     NavHost(navController, startDestination = AppScreens.PolizaScreen.route) {
         composable(AppScreens.PolizaScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.PolizaScreen)
-            PolizaScreen(scaffoldViewModel = scaffoldViewModel, navController = navController)
+            PolizaScreen(
+                navigate = navigate,
+                navController = navController
+            )
         }
         composable(AppScreens.InicioScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.InicioScreen)
-            InicioScreen(scaffoldViewModel = scaffoldViewModel, navController = navController)
+            InicioScreen()
         }
     }
-
-
 }

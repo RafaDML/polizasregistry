@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -27,12 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.polizas.polizasregistry.components.buttons.mainbutton.ui.ButtonType
+import com.polizas.polizasregistry.components.buttons.mainbutton.ui.MainButton
 
 @Composable
 fun DialogScreen(
     msg: String,
     icon: ImageVector,
-    onClickAcceptButton: (()-> Unit)
+    onClickAcceptButton: (() -> Unit)
 ) {
     Dialog(
         onDismissRequest = {},
@@ -64,7 +64,7 @@ fun DialogScreen(
                             modifier = Modifier.size(50.dp),
                             imageVector = icon,
                             contentDescription = null,
-                            tint = Color.Red,
+                            tint = Color(0XFF02177f),
 
                             )
                     }
@@ -80,27 +80,11 @@ fun DialogScreen(
                     ) {
                         Text(text = msg, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                     }
-
-
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xFF008080)
-                        ),
-                        enabled = true,
-                        onClick = {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        MainButton(true, {
                             onClickAcceptButton()
-                        },
-                        modifier = Modifier
-                            .padding(top = 16.dp, start = 10.dp, end = 10.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Aceptar",
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
+                        }, ButtonType.MainAffirmative)
                     }
-
                 }
             }
         }

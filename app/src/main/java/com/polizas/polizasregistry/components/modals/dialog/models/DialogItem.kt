@@ -7,5 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class DialogItem(
     var show: Boolean = false,
     var msg: String = "",
-    val icon: ImageVector = Icons.Filled.Info
+    val icon: ImageVector = Icons.Filled.Info,
+    val accept: () -> Unit = {},
+    val cancel: () -> Unit = {}
 )

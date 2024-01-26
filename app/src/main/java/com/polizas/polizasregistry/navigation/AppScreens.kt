@@ -8,7 +8,9 @@ sealed class AppScreens (val route: String, var icon: Int?, var title: String, v
 
     object ScaffoldScreen: AppScreens("home_scaffold_screen", R.drawable.icono_card,  "Home")
     //SCREEN FOR SCAFFOLD
-    object InicioScreen: AppScreens("inicio", R.drawable.icono_card,  "Inicio")
+    object InicioScreen: AppScreens("inicio", R.drawable.icono_entrega_domicilio,  "Inicio")
+
+    object CreatePolizaScreen: AppScreens("create_poliza", R.drawable.icono_card, "Nueva Póliza")
 
 
 

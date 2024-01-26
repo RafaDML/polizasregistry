@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PolizasRegistry</string>
+    <string name="app_name">Pólizas</string>
     <!--   ================  MainCards ================  -->
 
     <string name="PolizaCardHeader">Póliza No. </string>
@@ -8,9 +8,35 @@
     <string name="PolizaCardContentEmpleado">Empleado</string>
     <string name="PolizaCardContentFecha">Fecha</string>
 
-    <!--   ================  MainCards ================  -->
+    <!--   ================  STATES  ================  -->
+    <string name="IsLoadingLabel">Cargando</string>
 
+    <!--   ================  Buttons ================  -->
+    <string name="ButtonAfirmative">Aceptar</string>
+    <string name="ButtonNegative">Cancelar</string>
+
+
+
+    <!--   ================  MainCards ================  -->
     <string name="LoginUserLabel">Usuario  </string>
     <string name="LoginPasswordLabel">Contraseña  </string>
+
+    <!--   ================  CreatePolizasLabels ================  -->
+
+    <string name="PolizaSkuLabel">SKU   </string>
+    <string name="PolizaCantidadLabel">Cantidad  </string>
+    <string name="PolizaEmpleadoLabel">Num. Empleado  </string>
+
+
+
+
+    <string name="LabelCreatePoliza">Crear Nueva Póliza </string>
+    <string name="LabelUpdatePoliza">Editar Póliza </string>
+
+    <!--   ================  DELETEPOLIZAS ================  -->
+    <string name="LabelDeletePoliza">Desea eliminar la póliza</string>
+
+
+
 
 </resources>

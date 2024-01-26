@@ -4,7 +4,10 @@ import android.util.Log
 import com.polizas.polizasregistry.PolizaApplication
 import com.polizas.polizasregistry.core.sessionmanagers.SessionTokenManager
 import okhttp3.Interceptor
+import okhttp3.MediaType
+import okhttp3.Protocol
 import okhttp3.Response
+import okhttp3.ResponseBody
 
 class InterceptorPrincipal : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -30,7 +33,27 @@ class InterceptorPrincipal : Interceptor {
                 .addHeader(
                     "Authorization", "Bearer $token"
                 ).build()
-            chain.proceed(request)
+            var responseBody: ResponseBody
+            var statusCode: Int
+            var message: String
+            try {
+                val response = chain.proceed(request)
+                responseBody = response.body()!!
+                statusCode = response.code()
+                message = response.message()
+
+            } catch (ex: Exception) {
+                responseBody =
+                    ResponseBody.create(MediaType.get("application/json; charset=utf-8"), "{$ex}")
+                statusCode = 500
+                message = ex.message.toString()
+            }
+            return Response.Builder()
+                .request(request)
+                .protocol(Protocol.HTTP_1_1)
+                .code(statusCode)
+                .message(message)
+                .body(responseBody).build()
         }
     }
 }
