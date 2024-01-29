@@ -17,11 +17,15 @@ import com.polizas.polizasregistry.navigation.AppScreens
 import com.polizas.polizasregistry.navigation.MyNavGraph
 import com.polizas.polizasregistry.ui.theme.PolizasRegistryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.appcompat.app.AppCompatDelegate
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         setContent {
 
             PolizasRegistryTheme {

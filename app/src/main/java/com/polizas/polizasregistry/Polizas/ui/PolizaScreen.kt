@@ -129,12 +129,8 @@ fun PolizaBody(
                 polizaViewModel,
                 navController
             )
-
         }
-
     }
-
-
 }
 
 @Composable

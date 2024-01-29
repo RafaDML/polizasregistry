@@ -25,7 +25,6 @@ class ObtenerPolizasRepository @Inject constructor(
         catch (e : Exception){
             return BaseModel.Error("Error de conexion")
         }
-
     }
 
     private fun getResponseObtenerPolizas(response: Response<ResponseModel<ObtenerPolizasResponse>>): BaseModel<ObtenerPolizasItem> {

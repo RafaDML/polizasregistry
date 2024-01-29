@@ -40,7 +40,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.polizas.polizasregistry.components.modals.create.models.model.PolizaMainParamsItem
 import com.polizas.polizasregistry.components.modals.create.ui.CreatePolizaScreen
+import com.polizas.polizasregistry.components.modals.empleados.ui.EmpleadosScreen
 import com.polizas.polizasregistry.components.modals.inicio.ui.InicioScreen
+import com.polizas.polizasregistry.components.modals.inventario.ui.InventarioScreen
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
 import com.polizas.polizasregistry.polizas.ui.PolizaScreen
@@ -152,7 +154,9 @@ fun BottomNavigationBar(
 ) {
     val items = listOf(
         AppScreens.InicioScreen,
-        AppScreens.PolizaScreen
+        AppScreens.PolizaScreen,
+        AppScreens.InventarioScreen,
+        AppScreens.EmpleadosScreen
     )
     BottomAppBar(
         cutoutShape = CircleShape,
@@ -165,13 +169,7 @@ fun BottomNavigationBar(
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEachIndexed { i, item ->
             val color = if (currentRoute == item.route) Color(0XFF02177f) else Color(0XFFBDBDBD)
-            if (i == items.count() / 2) {
-                Spacer(
-                    Modifier
-                        .weight(1f)
-                        .padding(0.dp)
-                )
-            }
+
             BottomNavigationItem(
                 modifier = Modifier.padding(0.dp),
                 icon = {
@@ -185,7 +183,7 @@ fun BottomNavigationBar(
                         color = color
                     )
                 },
-                enabled = item.title != "Historial",
+                enabled = true,
                 selectedContentColor = Color(0XFF02177f),
                 unselectedContentColor = Color(0XFFBDBDBD),
                 alwaysShowLabel = true,
@@ -193,6 +191,10 @@ fun BottomNavigationBar(
                 onClick = {
                     navController.navigate(item.route) {
                         if ("polizascreen" == item.route) scaffoldViewModel.obtenerPolizas(navigate)
+                        if ("inventarioscreen" == item.route) scaffoldViewModel.obtenerPolizas(
+                            navigate
+                        )
+
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                                 saveState = false
@@ -235,6 +237,20 @@ fun Navigation(
         composable(AppScreens.InicioScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.InicioScreen)
             InicioScreen()
+        }
+        composable(AppScreens.InventarioScreen.route) {
+            scaffoldViewModel.changeTitulo(AppScreens.InventarioScreen)
+            InventarioScreen(
+                navigate = navigate,
+                navController = navController
+            )
+        }
+        composable(AppScreens.EmpleadosScreen.route) {
+            scaffoldViewModel.changeTitulo(AppScreens.EmpleadosScreen)
+            EmpleadosScreen(
+                navigate = navigate,
+                navController = navController
+            )
         }
     }
 }

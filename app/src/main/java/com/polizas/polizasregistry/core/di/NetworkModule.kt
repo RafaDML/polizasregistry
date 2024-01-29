@@ -3,6 +3,8 @@ package com.polizas.polizasregistry.core.di
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.polizas.polizasregistry.components.modals.create.data.network.InputPolizaClient
+import com.polizas.polizasregistry.components.modals.empleados.data.network.EmpleadoClient
+import com.polizas.polizasregistry.components.modals.inventario.data.network.InventarioClient
 import com.polizas.polizasregistry.core.network.interceptors.InterceptorPrincipal
 import com.polizas.polizasregistry.login.data.network.LoginClient
 import com.polizas.polizasregistry.polizas.data.network.PolizasClient
@@ -50,6 +52,18 @@ class NetworkModule {
     fun providePolizasClient(@Named("api_retrofit") retrofit: Retrofit): PolizasClient {
         return retrofit.create(PolizasClient::class.java)
     }
+    @Singleton
+    @Provides
+    fun provideInventarioClient(@Named("api_retrofit") retrofit: Retrofit): InventarioClient {
+        return retrofit.create(InventarioClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideEmpleadoClient(@Named("api_retrofit") retrofit: Retrofit): EmpleadoClient {
+        return retrofit.create(EmpleadoClient::class.java)
+    }
+
     @Singleton
     @Provides
     fun provideInputPolizasClient(@Named("api_retrofit") retrofit: Retrofit): InputPolizaClient {
