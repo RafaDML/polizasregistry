@@ -1,8 +1,5 @@
 package com.polizas.polizasregistry.components.modals.empleados.domain.model
 
-import com.google.gson.annotations.SerializedName
-import com.polizas.polizasregistry.components.modals.inventario.domain.model.Inventario
-import com.polizas.polizasregistry.components.modals.inventario.domain.model.toDomain
 import com.polizas.polizasregistry.components.modals.empleados.data.network.response.ObtenerEmpleadosResponse as ObtenerEmpleadosResponse
 import com.polizas.polizasregistry.components.modals.empleados.data.network.response.Empleados as EmpleadoResponse
 

@@ -3,7 +3,6 @@ package com.polizas.polizasregistry.scaffold.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,14 +54,14 @@ fun ScaffoldScreen(
 ) {
     scaffoldViewModel.obtenerPolizas(navigate)
 
-    showAddPolizaDialog(scaffoldViewModel)
-    ShowLoadingScreen(scaffoldViewModel, "Cargando")
+    ShowAddPolizaDialog(scaffoldViewModel)
+    ShowLoadingScreen(scaffoldViewModel)
 
     BottomBar(navigate, scaffoldViewModel)
 }
 
 @Composable
-fun showAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
+fun ShowAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
     val isShowAdd by scaffoldViewModel.showAddPoliza.observeAsState(false)
 
     if (isShowAdd) CreatePolizaScreen(
@@ -75,7 +74,7 @@ fun showAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
 }
 
 @Composable
-fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel, msg: String) {
+fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel) {
     val isLoading: Boolean by scaffoldViewModel.isLoading.observeAsState(initial = false)
     val msg: String by scaffoldViewModel.msg.observeAsState("")
     val message = if (msg.isNotEmpty()) msg else "Cargando"
@@ -167,7 +166,7 @@ fun BottomNavigationBar(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        items.forEachIndexed { i, item ->
+        items.forEachIndexed { _, item ->
             val color = if (currentRoute == item.route) Color(0XFF02177f) else Color(0XFFBDBDBD)
 
             BottomNavigationItem(
@@ -237,15 +236,13 @@ fun Navigation(
         composable(AppScreens.InventarioScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.InventarioScreen)
             InventarioScreen(
-                navigate = navigate,
-                navController = navController
+                navigate = navigate
             )
         }
         composable(AppScreens.EmpleadosScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.EmpleadosScreen)
             EmpleadosScreen(
-                navigate = navigate,
-                navController = navController
+                navigate = navigate
             )
         }
     }

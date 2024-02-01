@@ -11,7 +11,6 @@ import com.polizas.polizasregistry.PolizaApplication
 import com.polizas.polizasregistry.components.modals.dialog.models.DialogItem
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.ObtenerEmpleadosItem
 import com.polizas.polizasregistry.components.modals.empleados.domain.usecase.ObtenerEmpleadoUseCase
-import com.polizas.polizasregistry.components.modals.inventario.domain.model.ObtenerInventarioItem
 import com.polizas.polizasregistry.core.network.models.BaseModel
 import com.polizas.polizasregistry.core.sessionmanagers.SessionTokenManager
 import com.polizas.polizasregistry.navigation.AppScreens
@@ -32,7 +31,6 @@ class EmpleadoViewModel @Inject constructor(
     val msg: LiveData<String> = _msg
 
     private val _dialogInfo = MutableLiveData<DialogItem>()
-    val dialogInfo: LiveData<DialogItem> = _dialogInfo
 
     private var _empleadosValue = MutableLiveData<ObtenerEmpleadosItem>()
     val empleadosValue: LiveData<ObtenerEmpleadosItem> = _empleadosValue

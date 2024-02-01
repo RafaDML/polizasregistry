@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.polizas.polizasregistry.core.sessionmanagers.SessionTokenManager
 import com.polizas.polizasregistry.navigation.AppScreens
 import com.polizas.polizasregistry.navigation.MyNavGraph
@@ -34,8 +33,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val activityViewModel = hiltViewModel<MainViewModel>(
-                    )
                     val token =
                         SessionTokenManager.getToken(PolizaApplication.getApplicationContext()!!)
 

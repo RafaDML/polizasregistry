@@ -1,8 +1,6 @@
 package com.polizas.polizasregistry.components.modals.inventario.domain.model
 
-import com.google.gson.annotations.SerializedName
 import com.polizas.polizasregistry.components.modals.inventario.data.network.response.ObtenerInventarioResponse as ObtenerInventarioResponse
-import com.polizas.polizasregistry.polizas.domain.model.Polizas
 import com.polizas.polizasregistry.components.modals.inventario.data.network.response.Inventario as InventarioResponse
 
 data class ObtenerInventarioItem(

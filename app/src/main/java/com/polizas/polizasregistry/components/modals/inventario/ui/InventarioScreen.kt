@@ -31,29 +31,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.polizasregistry.R
-import com.polizas.polizasregistry.components.modals.empleados.viewmodel.EmpleadoViewModel
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.Inventario
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.ObtenerInventarioItem
 import com.polizas.polizasregistry.components.modals.inventario.viewmodel.InventarioViewModel
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
-import com.polizas.polizasregistry.scaffold.viewmodel.ScaffoldViewModel
 
 @Composable
 fun InventarioScreen(
     inventarioViewModel: InventarioViewModel = hiltViewModel(),
-    navigate: (AppScreens) -> Unit,
-    navController: NavController
+    navigate: (AppScreens) -> Unit
 
 ) {
-    ShowLoadingScreen(inventarioViewModel, "Cargando")
+    ShowLoadingScreen(inventarioViewModel)
 
     LaunchedEffect(Unit) {
         Log.i("RAFA", "recomposición inicial ")
 
-        inventarioViewModel.obtenerInventario { (navigate) }
+        inventarioViewModel.obtenerInventario {
+            Log.i("Donato", "$navigate")
+        }
 
     }
 
@@ -64,14 +62,14 @@ fun InventarioScreen(
 
     ) {
         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomEnd) {
-            ListaEmpleados(inventarioViewModel, navigate)
+            ListaEmpleados(inventarioViewModel)
         }
 
     }
 }
 
 @Composable
-fun ShowLoadingScreen(inventarioViewModel: InventarioViewModel, msg: String) {
+fun ShowLoadingScreen(inventarioViewModel: InventarioViewModel) {
     val isLoading: Boolean by inventarioViewModel.isLoading.observeAsState(initial = false)
     val msg: String by inventarioViewModel.msg.observeAsState("")
     val message = if (msg.isNotEmpty()) msg else "Cargando"
@@ -82,7 +80,7 @@ fun ShowLoadingScreen(inventarioViewModel: InventarioViewModel, msg: String) {
 
 
 @Composable
-fun ListaEmpleados(inventarioViewModel: InventarioViewModel, navigate: (AppScreens) -> Unit) {
+fun ListaEmpleados(inventarioViewModel: InventarioViewModel) {
     val datos: ObtenerInventarioItem by inventarioViewModel.inventarioItem.observeAsState(
         ObtenerInventarioItem()
     )
@@ -91,7 +89,7 @@ fun ListaEmpleados(inventarioViewModel: InventarioViewModel, navigate: (AppScree
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(datos.inventario) { item ->
             Log.i("LAZY COLUMN", item.toString())
-            CardItemPoliza(item, inventarioViewModel, navigate)
+            CardItemPoliza(item)
         }
     }
 }
@@ -100,9 +98,7 @@ fun ListaEmpleados(inventarioViewModel: InventarioViewModel, navigate: (AppScree
 @Composable
 fun CardContentPoliza(
     description: String,
-    valueDesc: String,
-    inventarioViewModel: InventarioViewModel,
-    datos: Inventario
+    valueDesc: String
 ) {
     var fontWeight: FontWeight
     var customPadding = 2.dp
@@ -152,9 +148,7 @@ fun CardContentPoliza(
 
 @Composable
 fun CardItemPoliza(
-    datos: Inventario,
-    inventarioViewModel: InventarioViewModel,
-    navigate: (AppScreens) -> Unit
+    datos: Inventario
 ) {
     Box(
         Modifier
@@ -198,15 +192,11 @@ fun CardItemPoliza(
 
             CardContentPoliza(
                 stringResource(id = R.string.PolizaCardContentCantidad),
-                datos.cantidad.toString(),
-                inventarioViewModel,
-                datos
+                datos.cantidad.toString()
             )
             CardContentPoliza(
                 stringResource(id = R.string.InventarioCardContentName),
-                " ${datos.sku.toString()} ",
-                inventarioViewModel,
-                datos
+                " ${datos.sku.toString()} "
             )
         }
     }

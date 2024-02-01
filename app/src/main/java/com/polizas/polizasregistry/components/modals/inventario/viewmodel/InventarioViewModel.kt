@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.polizas.polizasregistry.PolizaApplication
 import com.polizas.polizasregistry.components.modals.dialog.models.DialogItem
-import com.polizas.polizasregistry.components.modals.empleados.domain.model.ObtenerEmpleadosItem
-import com.polizas.polizasregistry.components.modals.empleados.domain.usecase.ObtenerEmpleadoUseCase
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.ObtenerInventarioItem
 import com.polizas.polizasregistry.components.modals.inventario.domain.usecase.ObtenerInventarioUseCase
 import com.polizas.polizasregistry.core.network.models.BaseModel
@@ -33,7 +31,6 @@ class InventarioViewModel @Inject constructor(
     val msg: LiveData<String> = _msg
 
     private val _dialogInfo = MutableLiveData<DialogItem>()
-    val dialogInfo: LiveData<DialogItem> = _dialogInfo
 
     private var _inventarioItem = MutableLiveData<ObtenerInventarioItem>()
     val inventarioItem: LiveData<ObtenerInventarioItem> = _inventarioItem

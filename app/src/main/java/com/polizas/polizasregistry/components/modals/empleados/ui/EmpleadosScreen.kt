@@ -31,13 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.polizasregistry.R
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.Empleados
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.ObtenerEmpleadosItem
 import com.polizas.polizasregistry.components.modals.empleados.viewmodel.EmpleadoViewModel
-import com.polizas.polizasregistry.components.modals.inventario.ui.ShowLoadingScreen
-import com.polizas.polizasregistry.components.modals.inventario.viewmodel.InventarioViewModel
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
 
@@ -45,12 +42,13 @@ import com.polizas.polizasregistry.navigation.AppScreens
 fun EmpleadosScreen(
     empleadoViewModel: EmpleadoViewModel = hiltViewModel(),
     navigate: (AppScreens) -> Unit,
-    navController: NavController
 ) {
-    ShowLoadingScreen(empleadoViewModel, "Cargando")
+    ShowLoadingScreen(empleadoViewModel)
     LaunchedEffect(Unit) {
         Log.i("RAFA", "recomposición inicial ")
-        empleadoViewModel.obtenerInventario { (navigate) }
+        empleadoViewModel.obtenerInventario {
+            Log.i("Donato", "$navigate")
+        }
     }
 
     Column(
@@ -61,8 +59,7 @@ fun EmpleadosScreen(
     ) {
         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomEnd) {
             ListaEmpleados(
-                empleadoViewModel,
-                navigate
+                empleadoViewModel
             )
         }
 
@@ -70,7 +67,7 @@ fun EmpleadosScreen(
 }
 
 @Composable
-fun ShowLoadingScreen(empleadoViewModel: EmpleadoViewModel, msg: String) {
+fun ShowLoadingScreen(empleadoViewModel: EmpleadoViewModel) {
     val isLoading: Boolean by empleadoViewModel.isLoading.observeAsState(initial = false)
     val msg: String by empleadoViewModel.msg.observeAsState("")
     val message = if (msg.isNotEmpty()) msg else "Cargando"
@@ -80,7 +77,7 @@ fun ShowLoadingScreen(empleadoViewModel: EmpleadoViewModel, msg: String) {
 }
 
 @Composable
-fun ListaEmpleados(empleadoViewModel: EmpleadoViewModel, navigate: (AppScreens) -> Unit) {
+fun ListaEmpleados(empleadoViewModel: EmpleadoViewModel) {
     val datos: ObtenerEmpleadosItem by empleadoViewModel.empleadosValue.observeAsState(
         ObtenerEmpleadosItem()
     )
@@ -89,7 +86,7 @@ fun ListaEmpleados(empleadoViewModel: EmpleadoViewModel, navigate: (AppScreens) 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(datos.empleados) { item ->
             Log.i("LAZY COLUMN", item.toString())
-            CardItemPoliza(item, empleadoViewModel, navigate)
+            CardItemPoliza(item)
         }
     }
 }
@@ -98,9 +95,7 @@ fun ListaEmpleados(empleadoViewModel: EmpleadoViewModel, navigate: (AppScreens) 
 @Composable
 fun CardContentPoliza(
     description: String,
-    valueDesc: String,
-    empleadoViewModel: EmpleadoViewModel,
-    datos: Empleados
+    valueDesc: String
 ) {
     var fontWeight: FontWeight
     var customPadding = 2.dp
@@ -151,10 +146,7 @@ fun CardContentPoliza(
 
 @Composable
 fun CardItemPoliza(
-    datos: Empleados,
-    empleadoViewModel: EmpleadoViewModel,
-    navigate: (AppScreens) -> Unit
-) {
+    datos: Empleados) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -197,15 +189,11 @@ fun CardItemPoliza(
         ) {
             CardContentPoliza(
                 stringResource(id = R.string.EmpleadoCardContentName),
-                datos.idEmpleado.toString(),
-                empleadoViewModel,
-                datos
+                datos.idEmpleado.toString()
             )
             CardContentPoliza(
                 stringResource(id = R.string.EmpleadoCardContentPuesto),
-                " ${datos.puesto.toString()} ",
-                empleadoViewModel,
-                datos
+                " ${datos.puesto.toString()} "
             )
         }
     }

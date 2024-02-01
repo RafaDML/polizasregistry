@@ -23,21 +23,21 @@ class EmpleadoRepository @Inject constructor(
     }
 
     private fun getResponseObtenerEmpleados(response: Response<ResponseModel<ObtenerEmpleadosResponse>>): BaseModel<ObtenerEmpleadosItem> {
-        if (response.code() == 200) {
+        return if (response.code() == 200) {
             val obtenerEmpleadosResponse = response.body()?.data?.toDomain()
             Log.i("OBTENER Empleados REPOSITORY", "VALOR $obtenerEmpleadosResponse")
             val meta = response.body()?.meta
             return if (meta?.status == "ERROR") {
                 BaseModel.Error(msg = response.message())
             } else {
-                return BaseModel.Success(obtenerEmpleadosResponse)
+                 BaseModel.Success(obtenerEmpleadosResponse)
             }
         } else if (response.code() == 403) {
-            return BaseModel.Error(msg = "Se cerrará la sesión", true)
+             BaseModel.Error(msg = "Se cerrará la sesión", true)
         } else {
             val mensaje =
-                if (response.message() != null) response.message() else " Error al obtener Empleados"
-            return BaseModel.Error(msg = mensaje)
+                response.message()
+             BaseModel.Error(msg = mensaje)
         }
     }
 }

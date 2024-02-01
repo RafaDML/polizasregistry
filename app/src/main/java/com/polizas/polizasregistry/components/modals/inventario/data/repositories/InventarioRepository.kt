@@ -7,7 +7,6 @@ import com.polizas.polizasregistry.components.modals.inventario.domain.model.Obt
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.toDomain
 import com.polizas.polizasregistry.core.network.models.BaseModel
 import com.polizas.polizasregistry.core.network.models.ResponseModel
-import com.polizas.polizasregistry.polizas.domain.model.toDomain
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -24,21 +23,21 @@ class InventarioRepository @Inject constructor(private val api: InventarioServic
     }
 
     private fun getResponseObtenerInventario(response: Response<ResponseModel<ObtenerInventarioResponse>>): BaseModel<ObtenerInventarioItem> {
-        if (response.code() == 200) {
+        return if (response.code() == 200) {
             val obtenerInventarioResponse = response.body()?.data?.toDomain()
             Log.i("OBTENER POLIZA REPOSITORY", "VALOR $obtenerInventarioResponse")
             val meta = response.body()?.meta
             return if (meta?.status == "ERROR") {
                 BaseModel.Error(msg = response.message())
             } else {
-                return BaseModel.Success(obtenerInventarioResponse)
+                 BaseModel.Success(obtenerInventarioResponse)
             }
         } else if (response.code() == 403) {
-            return BaseModel.Error(msg = "Se cerrará la sesión", true)
+             BaseModel.Error(msg = "Se cerrará la sesión", true)
         } else {
             val mensaje =
-                if (response.message() != null) response.message() else " Error al obtener pólizas"
-            return BaseModel.Error(msg = mensaje)
+                response.message()
+             BaseModel.Error(msg = mensaje)
         }
     }
 

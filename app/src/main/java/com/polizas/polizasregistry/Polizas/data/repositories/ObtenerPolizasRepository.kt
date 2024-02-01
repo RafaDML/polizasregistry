@@ -28,20 +28,20 @@ class ObtenerPolizasRepository @Inject constructor(
     }
 
     private fun getResponseObtenerPolizas(response: Response<ResponseModel<ObtenerPolizasResponse>>): BaseModel<ObtenerPolizasItem> {
-        if (response.code() == 200) {
+        return if (response.code() == 200) {
             val obtenerPolizasResponse = response.body()?.data?.toDomain()
             Log.i("OBTENER POLIZA REPOSITORY", "VALOR $obtenerPolizasResponse")
             val meta = response.body()?.meta
-            return if (meta?.status == "ERROR") {
+             if (meta?.status == "ERROR") {
                 BaseModel.Error(msg = response.message())
             } else {
-                return BaseModel.Success(obtenerPolizasResponse)
+                 BaseModel.Success(obtenerPolizasResponse)
             }
         } else if (response.code() == 403) {
-            return BaseModel.Error(msg = "Se cerrará la sesión", true)
+             BaseModel.Error(msg = "Se cerrará la sesión", true)
         } else {
-            val mensaje = if (response.message() != null) response.message() else " Error al obtener pólizas"
-            return BaseModel.Error(msg = mensaje)
+            val mensaje = response.message()
+             BaseModel.Error(msg = mensaje)
         }
     }
 
