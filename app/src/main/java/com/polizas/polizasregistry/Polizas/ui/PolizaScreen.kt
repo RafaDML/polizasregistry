@@ -186,7 +186,7 @@ fun CardItemPoliza(
         Row(
             Modifier
                 .fillMaxSize()
-                .clip(shape = RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                .clip(shape = RoundedCornerShape(7.dp, 7.dp, 0.dp, 0.dp))
                 .background(Color(0XFF02177f)), verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -223,7 +223,7 @@ fun CardItemPoliza(
             .fillMaxWidth()
             .padding(bottom = 10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
+        shape = RoundedCornerShape(0.dp, 0.dp, 7.dp, 7.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Cyan)
 
     ) {

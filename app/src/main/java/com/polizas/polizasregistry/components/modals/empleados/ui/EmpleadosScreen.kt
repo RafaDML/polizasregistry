@@ -36,6 +36,9 @@ import com.example.polizasregistry.R
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.Empleados
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.ObtenerEmpleadosItem
 import com.polizas.polizasregistry.components.modals.empleados.viewmodel.EmpleadoViewModel
+import com.polizas.polizasregistry.components.modals.inventario.ui.ShowLoadingScreen
+import com.polizas.polizasregistry.components.modals.inventario.viewmodel.InventarioViewModel
+import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
 
 @Composable
@@ -44,10 +47,12 @@ fun EmpleadosScreen(
     navigate: (AppScreens) -> Unit,
     navController: NavController
 ) {
+    ShowLoadingScreen(empleadoViewModel, "Cargando")
     LaunchedEffect(Unit) {
         Log.i("RAFA", "recomposición inicial ")
         empleadoViewModel.obtenerInventario { (navigate) }
     }
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -64,6 +69,15 @@ fun EmpleadosScreen(
     }
 }
 
+@Composable
+fun ShowLoadingScreen(empleadoViewModel: EmpleadoViewModel, msg: String) {
+    val isLoading: Boolean by empleadoViewModel.isLoading.observeAsState(initial = false)
+    val msg: String by empleadoViewModel.msg.observeAsState("")
+    val message = if (msg.isNotEmpty()) msg else "Cargando"
+    if (isLoading) {
+        LoadingScreen(msg = message)
+    }
+}
 
 @Composable
 fun ListaEmpleados(empleadoViewModel: EmpleadoViewModel, navigate: (AppScreens) -> Unit) {
@@ -98,8 +112,7 @@ fun CardContentPoliza(
 
     Box(
         Modifier
-            .padding(start = 30.dp, bottom = customPadding)
-            ,
+            .padding(start = 30.dp, bottom = customPadding),
         contentAlignment = Alignment.Center
     ) {
         Row {
@@ -182,12 +195,6 @@ fun CardItemPoliza(
         Column(
 
         ) {
-            CardContentPoliza(
-                stringResource(id = R.string.EmpleadoCardContentNameEmp),
-                datos.nomEmpleado.toString(),
-                empleadoViewModel,
-                datos
-            )
             CardContentPoliza(
                 stringResource(id = R.string.EmpleadoCardContentName),
                 datos.idEmpleado.toString(),

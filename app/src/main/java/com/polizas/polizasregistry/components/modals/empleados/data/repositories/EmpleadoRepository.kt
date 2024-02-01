@@ -5,7 +5,6 @@ import com.polizas.polizasregistry.components.modals.empleados.data.network.Empl
 import com.polizas.polizasregistry.components.modals.empleados.data.network.response.ObtenerEmpleadosResponse
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.ObtenerEmpleadosItem
 import com.polizas.polizasregistry.components.modals.empleados.domain.model.toDomain
-import com.polizas.polizasregistry.components.modals.inventario.domain.model.toDomain
 import com.polizas.polizasregistry.core.network.models.BaseModel
 import com.polizas.polizasregistry.core.network.models.ResponseModel
 import retrofit2.Response

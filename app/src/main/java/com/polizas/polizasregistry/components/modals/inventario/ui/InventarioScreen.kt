@@ -37,7 +37,9 @@ import com.polizas.polizasregistry.components.modals.empleados.viewmodel.Emplead
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.Inventario
 import com.polizas.polizasregistry.components.modals.inventario.domain.model.ObtenerInventarioItem
 import com.polizas.polizasregistry.components.modals.inventario.viewmodel.InventarioViewModel
+import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
+import com.polizas.polizasregistry.scaffold.viewmodel.ScaffoldViewModel
 
 @Composable
 fun InventarioScreen(
@@ -46,11 +48,15 @@ fun InventarioScreen(
     navController: NavController
 
 ) {
+    ShowLoadingScreen(inventarioViewModel, "Cargando")
 
     LaunchedEffect(Unit) {
         Log.i("RAFA", "recomposición inicial ")
+
         inventarioViewModel.obtenerInventario { (navigate) }
+
     }
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -61,6 +67,16 @@ fun InventarioScreen(
             ListaEmpleados(inventarioViewModel, navigate)
         }
 
+    }
+}
+
+@Composable
+fun ShowLoadingScreen(inventarioViewModel: InventarioViewModel, msg: String) {
+    val isLoading: Boolean by inventarioViewModel.isLoading.observeAsState(initial = false)
+    val msg: String by inventarioViewModel.msg.observeAsState("")
+    val message = if (msg.isNotEmpty()) msg else "Cargando"
+    if (isLoading) {
+        LoadingScreen(msg = message)
     }
 }
 

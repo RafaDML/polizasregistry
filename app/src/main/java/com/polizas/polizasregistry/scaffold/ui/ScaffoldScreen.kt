@@ -191,10 +191,6 @@ fun BottomNavigationBar(
                 onClick = {
                     navController.navigate(item.route) {
                         if ("polizascreen" == item.route) scaffoldViewModel.obtenerPolizas(navigate)
-                        if ("inventarioscreen" == item.route) scaffoldViewModel.obtenerPolizas(
-                            navigate
-                        )
-
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                                 saveState = false
