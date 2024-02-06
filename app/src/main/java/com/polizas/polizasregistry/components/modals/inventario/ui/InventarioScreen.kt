@@ -12,14 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,7 +69,7 @@ fun InventarioScreen(
 fun ShowLoadingScreen(inventarioViewModel: InventarioViewModel) {
     val isLoading: Boolean by inventarioViewModel.isLoading.observeAsState(initial = false)
     val msg: String by inventarioViewModel.msg.observeAsState("")
-    val message = if (msg.isNotEmpty()) msg else "Cargando"
+    val message = msg.ifEmpty { "Cargando" }
     if (isLoading) {
         LoadingScreen(msg = message)
     }
@@ -87,9 +84,9 @@ fun ListaEmpleados(inventarioViewModel: InventarioViewModel) {
     Log.i("POLIZAS VIEWMODEL", " VALOR DE DATOS  ${datos.inventario.size}")
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(datos.inventario) { item ->
-            Log.i("LAZY COLUMN", item.toString())
-            CardItemPoliza(item)
+        items(datos.inventario.size) { index ->
+            Log.i("LAZY COLUMN", index.toString())
+            CardItemPoliza(datos.inventario[index])
         }
     }
 }
@@ -186,9 +183,7 @@ fun CardItemPoliza(
         colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Cyan)
 
     ) {
-        Column(
-
-        ) {
+        Column {
 
             CardContentPoliza(
                 stringResource(id = R.string.PolizaCardContentCantidad),
