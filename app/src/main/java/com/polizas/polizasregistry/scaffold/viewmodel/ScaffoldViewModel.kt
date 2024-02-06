@@ -53,6 +53,8 @@ class ScaffoldViewModel @Inject constructor(
         _ruta.value = route
         _titulo.value = when (route.route) {
             "poliza_screen" -> "Polizas"
+            "inventario_screen" -> "Inventario"
+            "empleados_screen" -> "Empleados"
             else -> "INICIO"
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.polizas.polizasregistry.components.forms.textfield.model.InputSettingsItem
 
 @Composable
 fun InputScreen(
@@ -44,10 +45,7 @@ fun TextFieldExample(
             .padding(vertical = 10.dp),
         value = texto,
         onValueChange = { onTextChange(it) },
-        textColor = Color.Black, // Customize text color
-        backgroundColor = Color.White, // Customize background color
-        borderColor = Color.Black, // Customize border color
-        borderWidth = 2, // Customize border width
+        inputSettingsItem = InputSettingsItem(Color.Black,Color.White,Color.Black,2),
         visualTransformation = visualT,
         keyboardOptions = keyboardOptions
     )
@@ -58,24 +56,21 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    textColor: Color = Color.Black,
-    backgroundColor: Color = Color.White,
-    borderColor: Color = Color.Gray,
-    borderWidth: Int = 1,
+    inputSettingsItem: InputSettingsItem,
     visualTransformation: VisualTransformation,
     keyboardOptions: KeyboardOptions
 ) {
     BasicTextField(
         modifier = modifier
-            .border(width = borderWidth.dp, color = borderColor, shape = RoundedCornerShape(7.dp))
-            .background(backgroundColor, CircleShape)
+            .border(width = inputSettingsItem.borderWidth.dp, color = inputSettingsItem.borderColor, shape = RoundedCornerShape(7.dp))
+            .background(inputSettingsItem.backgroundColor, CircleShape)
             .height(40.dp),
         value = value,
         keyboardOptions = keyboardOptions,
         onValueChange = onValueChange,
         textStyle = TextStyle(
             fontWeight = FontWeight.SemiBold,
-            fontSize = 20.sp, color = textColor
+            fontSize = 20.sp, color = inputSettingsItem.textColor
         ),
         singleLine = true,
         visualTransformation = visualTransformation,

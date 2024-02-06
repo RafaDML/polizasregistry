@@ -7,6 +7,15 @@
     <string name="PolizaCardContentCantidad">Cantidad</string>
     <string name="PolizaCardContentEmpleado">Empleado</string>
     <string name="PolizaCardContentFecha">Fecha</string>
+    <!--   ================  Inventario  ================  -->
+    <string name="InventarioCardContentName">Código de Artículo</string>
+    <string name="InventarioCardContentCantidad">Cantidad</string>
+
+    <!--   ================  Empleados  ================  -->
+    <string name="EmpleadoCardContentName">Número de empleado</string>
+    <string name="EmpleadoCardContentNameEmp">Número de empleado</string>
+    <string name="EmpleadoCardContentPuesto">Puesto</string>
+
 
     <!--   ================  STATES  ================  -->
     <string name="IsLoadingLabel">Cargando</string>

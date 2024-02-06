@@ -99,14 +99,13 @@ fun CreatePolizaScreen(
     if (isLoading) {
         LoadingScreen(msg = msg)
     }
-    CreatePolizaBody(createPolizaViewModel, titulo, onClickAcceptButton,onClickCancelButton, isEdit, polizaParams)
+    CreatePolizaBody(createPolizaViewModel, titulo,onClickCancelButton, isEdit, polizaParams)
 }
 
 @Composable
 fun CreatePolizaBody(
     createPolizaViewModel: CreatePolizaViewModel,
     titulo: String,
-    onClickAcceptButton: () -> Unit,
     onClickCancelButton: () -> Unit,
     isEdit: Boolean,
     polizaParams: PolizaMainParamsItem

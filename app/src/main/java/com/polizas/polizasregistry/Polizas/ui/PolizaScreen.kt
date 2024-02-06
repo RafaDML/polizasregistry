@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -48,7 +47,6 @@ import com.example.polizasregistry.R
 import com.polizas.polizasregistry.components.modals.create.models.model.PolizaMainParamsItem
 import com.polizas.polizasregistry.components.modals.create.ui.CreatePolizaScreen
 import com.polizas.polizasregistry.components.modals.dialog.ui.DialogScreen
-import com.polizas.polizasregistry.components.modals.dialogoptions.models.DialogOptionsItem
 import com.polizas.polizasregistry.components.modals.dialogoptions.ui.DialogOptionsScreen
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
@@ -67,9 +65,7 @@ fun PolizaScreen(
         polizaViewModel.obtenerPolizas(navigate)
     }
     ShowPolizaNewDialog(polizaViewModel, navigate)
-    val showDialogOptions: DialogOptionsItem by polizaViewModel.dialogInfoOptions.observeAsState(
-        DialogOptionsItem()
-    )
+
 
 
     val showDeletePolizas: Boolean by polizaViewModel.showDeletePoliza.observeAsState(false)
@@ -102,17 +98,12 @@ fun PolizaScreen(
             .fillMaxSize()
 
     ) {
-        PolizaBody(
-            modifier = Modifier
-                .weight(1f)
-                .background(Color(0xFFdae2f7)), polizaViewModel, navigate, navController
-        )
+        PolizaBody(polizaViewModel, navigate, navController)
     }
 }
 
 @Composable
 fun PolizaBody(
-    modifier: Modifier,
     polizaViewModel: PolizaViewModel,
     navigate: (AppScreens) -> Unit,
     navController: NavController
@@ -129,12 +120,8 @@ fun PolizaBody(
                 polizaViewModel,
                 navController
             )
-
         }
-
     }
-
-
 }
 
 @Composable
@@ -168,9 +155,9 @@ fun ListaPolizas(
     Log.i("POLIZAS VIEWMODEL", " VALOR DE DATOS  ${datos.polizas.size}")
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(datos.polizas) { item ->
-            Log.i("LAZY COLUMN", item.toString())
-            CardItemPoliza(item, polizaViewModel, navigate)
+        items(datos.polizas.size) { index ->
+            Log.i("LAZY COLUMN", index.toString())
+            CardItemPoliza(datos.polizas[index], polizaViewModel, navigate)
         }
     }
 }
@@ -190,7 +177,7 @@ fun CardItemPoliza(
         Row(
             Modifier
                 .fillMaxSize()
-                .clip(shape = RoundedCornerShape(16.dp, 16.dp, 0.dp, 0.dp))
+                .clip(shape = RoundedCornerShape(7.dp, 7.dp, 0.dp, 0.dp))
                 .background(Color(0XFF02177f)), verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -227,7 +214,7 @@ fun CardItemPoliza(
             .fillMaxWidth()
             .padding(bottom = 10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-        shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
+        shape = RoundedCornerShape(0.dp, 0.dp, 7.dp, 7.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Cyan)
 
     ) {
@@ -370,10 +357,4 @@ fun ShowPolizaNewDialog(polizaViewModel: PolizaViewModel, navigate: (AppScreens)
             polizaViewModel.obtenerPolizas(navigate)
         },
         { polizaViewModel.closeCreatePolizaDialog() })
-}
-
-@Composable
-fun Footer(modifier: Modifier) {
-    Box(modifier = modifier)
-
 }

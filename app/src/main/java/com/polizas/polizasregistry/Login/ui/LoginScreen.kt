@@ -16,8 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.polizas.polizasregistry.navigation.AppScreens
 import com.example.polizasregistry.R
+import com.polizas.polizasregistry.components.forms.textfield.model.InputSettingsItem
 import com.polizas.polizasregistry.components.modals.dialog.models.DialogItem
 import com.polizas.polizasregistry.components.modals.dialog.ui.DialogScreen
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
@@ -46,7 +46,7 @@ fun LoginScreen(
 
     ) {
     loginViewModel.entrarScaffold(navigate)
-    showModals(loginViewModel)
+    ShowModals(loginViewModel)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -59,14 +59,17 @@ fun LoginScreen(
 }
 
 @Composable
-fun showModals( viewModel: LoginViewModel) {
+fun ShowModals(viewModel: LoginViewModel) {
     val loading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     val showDialog: DialogItem by viewModel.dialogInfo.observeAsState(DialogItem())
-    if (loading){
+    if (loading) {
         LoadingScreen()
     }
-    if(showDialog.show){
-        DialogScreen(showDialog.msg, showDialog.icon, onClickAcceptButton = {viewModel.closeModal(false,"")})
+    if (showDialog.show) {
+        DialogScreen(
+            showDialog.msg,
+            showDialog.icon,
+            onClickAcceptButton = { viewModel.closeModal(false, "") })
     }
 }
 
@@ -93,22 +96,19 @@ fun CustomizedTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    textColor: Color = Color.Black,
-    backgroundColor: Color = Color.White,
-    borderColor: Color = Color.Gray,
-    borderWidth: Int = 1,
+    inputSettingsItem: InputSettingsItem,
     visualTransformation: VisualTransformation
 ) {
     BasicTextField(
         modifier = modifier
-            .border(width = borderWidth.dp, color = borderColor, shape = RoundedCornerShape(7.dp))
-            .background(backgroundColor, CircleShape)
+            .border(width = inputSettingsItem.borderWidth.dp, color = inputSettingsItem.borderColor, shape = RoundedCornerShape(7.dp))
+            .background(inputSettingsItem.backgroundColor, CircleShape)
             .height(40.dp),
         value = value,
         onValueChange = onValueChange,
         textStyle = TextStyle(
             fontWeight = FontWeight.SemiBold,
-            fontSize = 20.sp, color = textColor
+            fontSize = 20.sp, color = inputSettingsItem.textColor
         ),
         singleLine = true,
         visualTransformation = visualTransformation,
@@ -138,10 +138,7 @@ fun TextFieldExample(
             .padding(10.dp),
         value = texto,
         onValueChange = { onTextChange(it) },
-        textColor = Color.Black, // Customize text color
-        backgroundColor = Color.White, // Customize background color
-        borderColor = Color.Black, // Customize border color
-        borderWidth = 2, // Customize border width
+        inputSettingsItem = InputSettingsItem(Color.Black, Color.White, Color.Black, 2),
         visualTransformation = visualT
     )
 }
@@ -194,7 +191,7 @@ fun LoginBody(viewModel: LoginViewModel, navigate: (AppScreens) -> Unit) {
             ) {
             viewModel.onChangeUser(username = username, password = it)
         }
-        ButtonMain(viewModel,username,password,navigate)
+        ButtonMain(viewModel, username, password, navigate)
 
     }
 }

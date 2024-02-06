@@ -3,7 +3,6 @@ package com.polizas.polizasregistry.scaffold.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,7 +39,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.polizas.polizasregistry.components.modals.create.models.model.PolizaMainParamsItem
 import com.polizas.polizasregistry.components.modals.create.ui.CreatePolizaScreen
+import com.polizas.polizasregistry.components.modals.empleados.ui.EmpleadosScreen
 import com.polizas.polizasregistry.components.modals.inicio.ui.InicioScreen
+import com.polizas.polizasregistry.components.modals.inventario.ui.InventarioScreen
 import com.polizas.polizasregistry.components.modals.loading.ui.LoadingScreen
 import com.polizas.polizasregistry.navigation.AppScreens
 import com.polizas.polizasregistry.polizas.ui.PolizaScreen
@@ -53,14 +54,14 @@ fun ScaffoldScreen(
 ) {
     scaffoldViewModel.obtenerPolizas(navigate)
 
-    showAddPolizaDialog(scaffoldViewModel)
-    ShowLoadingScreen(scaffoldViewModel, "Cargando")
+    ShowAddPolizaDialog(scaffoldViewModel)
+    ShowLoadingScreen(scaffoldViewModel)
 
     BottomBar(navigate, scaffoldViewModel)
 }
 
 @Composable
-fun showAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
+fun ShowAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
     val isShowAdd by scaffoldViewModel.showAddPoliza.observeAsState(false)
 
     if (isShowAdd) CreatePolizaScreen(
@@ -73,7 +74,7 @@ fun showAddPolizaDialog(scaffoldViewModel: ScaffoldViewModel) {
 }
 
 @Composable
-fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel, msg: String) {
+fun ShowLoadingScreen(scaffoldViewModel: ScaffoldViewModel) {
     val isLoading: Boolean by scaffoldViewModel.isLoading.observeAsState(initial = false)
     val msg: String by scaffoldViewModel.msg.observeAsState("")
     val message = if (msg.isNotEmpty()) msg else "Cargando"
@@ -152,7 +153,9 @@ fun BottomNavigationBar(
 ) {
     val items = listOf(
         AppScreens.InicioScreen,
-        AppScreens.PolizaScreen
+        AppScreens.PolizaScreen,
+        AppScreens.InventarioScreen,
+        AppScreens.EmpleadosScreen
     )
     BottomAppBar(
         cutoutShape = CircleShape,
@@ -163,15 +166,9 @@ fun BottomNavigationBar(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        items.forEachIndexed { i, item ->
+        items.forEachIndexed { _, item ->
             val color = if (currentRoute == item.route) Color(0XFF02177f) else Color(0XFFBDBDBD)
-            if (i == items.count() / 2) {
-                Spacer(
-                    Modifier
-                        .weight(1f)
-                        .padding(0.dp)
-                )
-            }
+
             BottomNavigationItem(
                 modifier = Modifier.padding(0.dp),
                 icon = {
@@ -185,7 +182,7 @@ fun BottomNavigationBar(
                         color = color
                     )
                 },
-                enabled = item.title != "Historial",
+                enabled = true,
                 selectedContentColor = Color(0XFF02177f),
                 unselectedContentColor = Color(0XFFBDBDBD),
                 alwaysShowLabel = true,
@@ -235,6 +232,18 @@ fun Navigation(
         composable(AppScreens.InicioScreen.route) {
             scaffoldViewModel.changeTitulo(AppScreens.InicioScreen)
             InicioScreen()
+        }
+        composable(AppScreens.InventarioScreen.route) {
+            scaffoldViewModel.changeTitulo(AppScreens.InventarioScreen)
+            InventarioScreen(
+                navigate = navigate
+            )
+        }
+        composable(AppScreens.EmpleadosScreen.route) {
+            scaffoldViewModel.changeTitulo(AppScreens.EmpleadosScreen)
+            EmpleadosScreen(
+                navigate = navigate
+            )
         }
     }
 }
