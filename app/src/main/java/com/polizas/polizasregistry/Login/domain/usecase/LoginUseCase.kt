@@ -11,7 +11,7 @@ class LoginUseCase @Inject constructor(private val repository: LoginRepository) 
     suspend fun doLogin(email: String, password: String) : BaseModel<LoginItem> {
         Log.i("RAFA - username ", email)
         Log.i("RAFA - password ", password)
-        val request = LoginRequest(username = email, password = password)
+        val request = LoginRequest(usr = email, cred = password)
         return repository.doLogin(request)
     }
 }
